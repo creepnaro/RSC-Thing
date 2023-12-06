@@ -14,9 +14,9 @@ RSCID = {}
 minrpv = 15
 maxrpv = 75
 
-promotion_constant = maxrpv-minrpv
+promotion_constant = 50
 doublepromorpv = 95
-double_promotion_constant = doublepromorpv - minrpv
+double_promotion_constant = maxrpv-minrpv
 
 #Constants for MMR
 
@@ -58,6 +58,7 @@ class mmrCalculator:
             else:
                 self.rpv = rpv
             self.mmr = None
+        
         else:
             print('Tier Error')
             return None
@@ -104,7 +105,23 @@ for line in fp.readlines():
 
 fp.close()
 
+fp = open("Skip Season.txt", "r")
+
+for line in fp.readlines():
+    line = line.strip("\n")
+    record = line.split(",")
+    code = record[0]
+    tier = record[1]
+    rpv = float(record[2])
+    RSCID[code] = mmrCalculator(code,tier,rpv)
+
+fp.close()
+
+print(RSCID['RSC005088'])
+
 for id,mmr in RSCID.items():
     mmr.promotion()
     mmr.calculateMMR()
     mmr.exportingMMR()
+
+print(RSCID['RSC005088'])
